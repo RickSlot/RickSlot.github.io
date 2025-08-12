@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photography Portfolio</title>
+    <title>Rick's Photography Portfolio</title>
     <style>
         body {
             font-family: sans-serif;
@@ -158,7 +158,7 @@
                         lightboxContent.src = photoDir + photoData.filename;
                         exifDataContainer.innerHTML = `
                             Aperture: f/${photoData.aperture} | 
-                            Shutter Speed: 1/${Math.round(1/photoData.shutterSpeed)}s | 
+                            Shutter Speed: 1/${Math.round(1/eval(photoData.shutterSpeed))}s | 
                             ISO: ${photoData.iso} | 
                             Focal Length: ${photoData.focalLength}
                         `;
