@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography Portfolio</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            padding: 1rem;
+            text-align: center;
+            background-color: #444;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-auto-rows: 250px;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .gallery-item.big {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+        .gallery-item.tall {
+            grid-row: span 2;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.show {
+            display: flex;
+        }
+        .lightbox-content-container {
+            position: relative;
+        }
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .exif-data {
+            position: absolute;
+            bottom: 5px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Photography Portfolio</h1>
+</header>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+    <div class="gallery" id="gallery">
+        <!-- Photos will be loaded here by JavaScript -->
+    </div>
+
+    <!-- Lightbox structure -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <div class="lightbox-content-container">
+            <img class="lightbox-content" id="lightbox-content">
+            <div class="exif-data" id="exif-data"></div>
+        </div>
+    </div>
+
+    <script>
+        const gallery = document.getElementById('gallery');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxContent = document.getElementById('lightbox-content');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const exifDataContainer = document.getElementById('exif-data');
+        const photoDir = 'photos/';
+        const thumbDir = 'photos/thumbnails/';
+
+        let photosData = [];
+
+        fetch('photos.json')
+            .then(response => response.json())
+            .then(data => {
+                photosData = data;
+                photosData.forEach((photo, index) => {
+                    const item = document.createElement('div');
+                    item.classList.add('gallery-item');
+
+                    // Make some items bigger for a playful layout
+                    if (index % 7 === 0) {
+                        item.classList.add('big');
+                    } else if (index % 5 === 0) {
+                        item.classList.add('tall');
+                    }
+
+                    const img = document.createElement('img');
+                    img.src = thumbDir + photo.filename;
+                    img.alt = "A photo from the portfolio";
+                    img.dataset.index = index; // Store index to find photo data
+                    
+                    img.addEventListener('click', () => {
+                        const photoIndex = img.dataset.index;
+                        const photoData = photosData[photoIndex];
+                        lightbox.classList.add('show');
+                        lightboxContent.src = photoDir + photoData.filename;
+                        exifDataContainer.innerHTML = `
+                            Aperture: f/${photoData.aperture} | 
+                            Shutter Speed: 1/${Math.round(1/photoData.shutterSpeed)}s | 
+                            ISO: ${photoData.iso} | 
+                            Focal Length: ${photoData.focalLength}
+                        `;
+                    });
+
+                    item.appendChild(img);
+                    gallery.appendChild(item);
+                });
+            })
+            .catch(error => console.error('Error loading photos:', error));
+
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('show');
+        });
+
+        // Also close lightbox on clicking the background
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
