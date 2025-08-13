@@ -135,6 +135,14 @@
             .then(response => response.json())
             .then(data => {
                 photosData = data;
+
+                // Sort photos by date taken
+                photosData.sort((a, b) => {
+                    return b.filename.localeCompare(a.filename);
+                });
+
+                console.log(photosData);
+
                 photosData.forEach((photo, index) => {
                     const item = document.createElement('div');
                     item.classList.add('gallery-item');

@@ -32,18 +32,19 @@ for file in "$PHOTO_DIR"/*.jpg; do
     if [ -f "$file" ]; then
         FILENAME=$(basename "$file")
         # Get EXIF data as JSON
-        EXIF_DATA=$(exiftool -json -ApertureValue -ShutterSpeedValue -ISO -FocalLength "$file")
+        EXIF_DATA=$(exiftool -json -ApertureValue -ShutterSpeedValue -ISO -FocalLength -DateTimeOriginal "$file")
         APERTURE=$(echo "$EXIF_DATA" | jq -r '.[0].ApertureValue')
         SHUTTER_SPEED=$(echo "$EXIF_DATA" | jq -r '.[0].ShutterSpeedValue')
         ISO=$(echo "$EXIF_DATA" | jq -r '.[0].ISO')
         FOCAL_LENGTH=$(echo "$EXIF_DATA" | jq -r '.[0].FocalLength')
+        DATE_TAKEN=$(echo "$EXIF_DATA" | jq -r '.[0].DateTimeOriginal' | sed 's/:/-/g' | sed 's/ /T/')
 
         if [ "$FIRST" = true ]; then
             FIRST=false
         else
             echo "," >> "$PHOTOS_JSON"
         fi
-        JSON_OBJECT="{\"filename\": \"$FILENAME\", \"aperture\": \"$APERTURE\", \"shutterSpeed\": \"$SHUTTER_SPEED\", \"iso\": \"$ISO\", \"focalLength\": \"$FOCAL_LENGTH\"}"
+        JSON_OBJECT="{\"filename\": \"$FILENAME\", \"aperture\": \"$APERTURE\", \"shutterSpeed\": \"$SHUTTER_SPEED\", \"iso\": \"$ISO\", \"focalLength\": \"$FOCAL_LENGTH\", \"dateTaken\": \"$DATE_TAKEN\"}"
         echo -n "$JSON_OBJECT" >> "$PHOTOS_JSON"
     fi
 done
