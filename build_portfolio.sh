@@ -32,22 +32,31 @@ for file in "$PHOTO_DIR"/*.jpg; do
     if [ -f "$file" ]; then
         FILENAME=$(basename "$file")
         # Get EXIF data as JSON
-        EXIF_DATA=$(exiftool -json -ApertureValue -ShutterSpeedValue -ISO -FocalLength -DateTimeOriginal "$file")
+        EXIF_DATA=$(exiftool -json -ApertureValue -ShutterSpeedValue -ISO -FocalLength -DateTimeOriginal -ImageWidth -ImageHeight "$file")
         APERTURE=$(echo "$EXIF_DATA" | jq -r '.[0].ApertureValue')
         SHUTTER_SPEED=$(echo "$EXIF_DATA" | jq -r '.[0].ShutterSpeedValue')
         ISO=$(echo "$EXIF_DATA" | jq -r '.[0].ISO')
         FOCAL_LENGTH=$(echo "$EXIF_DATA" | jq -r '.[0].FocalLength')
         DATE_TAKEN=$(echo "$EXIF_DATA" | jq -r '.[0].DateTimeOriginal' | sed 's/:/-/g' | sed 's/ /T/')
+        IMAGE_WIDTH=$(echo "$EXIF_DATA" | jq -r '.[0].ImageWidth')
+        IMAGE_HEIGHT=$(echo "$EXIF_DATA" | jq -r '.[0].ImageHeight')
 
         if [ "$FIRST" = true ]; then
             FIRST=false
         else
             echo "," >> "$PHOTOS_JSON"
         fi
-        JSON_OBJECT="{\"filename\": \"$FILENAME\", \"aperture\": \"$APERTURE\", \"shutterSpeed\": \"$SHUTTER_SPEED\", \"iso\": \"$ISO\", \"focalLength\": \"$FOCAL_LENGTH\", \"dateTaken\": \"$DATE_TAKEN\"}"
+        JSON_OBJECT="{\"filename\": \"$FILENAME\", \"aperture\": \"$APERTURE\", \"shutterSpeed\": \"$SHUTTER_SPEED\", \"iso\": \"$ISO\", \"focalLength\": \"$FOCAL_LENGTH\", \"dateTaken\": \"$DATE_TAKEN\", \"imageWidth\": \"$IMAGE_WIDTH\", \"imageHeight\": \"$IMAGE_HEIGHT\"}"
         echo -n "$JSON_OBJECT" >> "$PHOTOS_JSON"
     fi
 done
 echo "]" >> "$PHOTOS_JSON"
 
 echo "Successfully generated $PHOTOS_JSON with photos from $PHOTO_DIR/"
+
+# Add generated files to git
+echo "Adding generated files to git..."
+git add "$PHOTOS_JSON"
+git add "$THUMB_DIR/"
+
+echo "Successfully added generated files to git."
