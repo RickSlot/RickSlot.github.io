@@ -19,7 +19,10 @@ mkdir -p "$THUMB_DIR"
 echo "Generating thumbnails..."
 for file in "$PHOTO_DIR"/*.jpg; do
     if [ -f "$file" ]; then
-        sips -Z 600 --setProperty formatOptions 95 "$file" --out "$THUMB_DIR/$(basename "$file")"
+        THUMBNAIL_PATH="$THUMB_DIR/$(basename "$file")"
+        if [ ! -f "$THUMBNAIL_PATH" ]; then
+            sips -Z 600 --setProperty formatOptions 95 "$file" --out "$THUMBNAIL_PATH"
+        fi
     fi
 done
 
