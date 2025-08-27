@@ -220,6 +220,26 @@
         let photosData = [];
         let currentPhotoIndex = -1; // To keep track of the currently displayed photo
 
+        function getExifDataHtml(photoData) {
+            const exifParts = [];
+            if (photoData.aperture && photoData.aperture !== 'null') {
+                exifParts.push(`Aperture: f/${photoData.aperture}`);
+            }
+            if (photoData.shutterSpeed && photoData.shutterSpeed !== 'null') {
+                const shutterSpeed = photoData.shutterSpeed.includes('/') 
+                    ? `1/${Math.round(1 / eval(photoData.shutterSpeed))}s` 
+                    : `${photoData.shutterSpeed}s`;
+                exifParts.push(`Shutter Speed: ${shutterSpeed}`);
+            }
+            if (photoData.iso && photoData.iso !== 'null') {
+                exifParts.push(`ISO: ${photoData.iso}`);
+            }
+            if (photoData.focalLength && photoData.focalLength !== 'null') {
+                exifParts.push(`Focal Length: ${photoData.focalLength}`);
+            }
+            return exifParts.join(' | ');
+        }
+
         function showPhoto(index) {
             if (index < 0) {
                 index = photosData.length - 1; // Loop to last photo
@@ -229,12 +249,7 @@
             currentPhotoIndex = index;
             const photoData = photosData[currentPhotoIndex];
             lightboxContent.src = photoDir + photoData.filename;
-            exifDataContainer.innerHTML = `
-                Aperture: f/${photoData.aperture} | 
-                Shutter Speed: 1/${Math.round(1/eval(photoData.shutterSpeed))}s | 
-                ISO: ${photoData.iso} | 
-                Focal Length: ${photoData.focalLength}
-            `;
+            exifDataContainer.innerHTML = getExifDataHtml(photoData);
         }
 
         fetch('photos.json')
