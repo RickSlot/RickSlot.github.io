@@ -1,11 +1,5 @@
 [
-{"filename": "DSC00197.jpg", "aperture": "11.0", "shutterSpeed": "1/125", "iso": "100", "focalLength": "34.0 mm", "dateTaken": "2025-08-02T15-23-23", "imageWidth": "3985", "imageHeight": "5978"},
-{"filename": "DSC00211-2.jpg", "aperture": "5.6", "shutterSpeed": "1/800", "iso": "100", "focalLength": "50.0 mm", "dateTaken": "2025-08-02T15-42-07", "imageWidth": "3303", "imageHeight": "4948"},
-{"filename": "DSC00211.jpg", "aperture": "5.6", "shutterSpeed": "1/800", "iso": "100", "focalLength": "50.0 mm", "dateTaken": "2025-08-02T15-42-07", "imageWidth": "1440", "imageHeight": "2160"},
 {"filename": "DSC00277.jpg", "aperture": "5.0", "shutterSpeed": "1/50", "iso": "100", "focalLength": "32.0 mm", "dateTaken": "2025-08-05T21-33-04", "imageWidth": "4000", "imageHeight": "6000"},
-{"filename": "DSC00303.jpg", "aperture": "8.0", "shutterSpeed": "1/100", "iso": "100", "focalLength": "50.0 mm", "dateTaken": "2025-08-06T19-48-24", "imageWidth": "6000", "imageHeight": "4000"},
-{"filename": "DSC00307.jpg", "aperture": "5.6", "shutterSpeed": "1/80", "iso": "160", "focalLength": "50.0 mm", "dateTaken": "2025-08-06T19-50-59", "imageWidth": "4000", "imageHeight": "6000"},
-{"filename": "DSC00317.jpg", "aperture": "5.6", "shutterSpeed": "1/160", "iso": "160", "focalLength": "50.0 mm", "dateTaken": "2025-08-06T19-57-20", "imageWidth": "6000", "imageHeight": "4000"},
 {"filename": "DSC00350.jpg", "aperture": "9.0", "shutterSpeed": "1/80", "iso": "640", "focalLength": "50.0 mm", "dateTaken": "2025-08-06T20-24-47", "imageWidth": "6000", "imageHeight": "4000"},
 {"filename": "DSC00369.jpg", "aperture": "8.0", "shutterSpeed": "1/125", "iso": "100", "focalLength": "33.0 mm", "dateTaken": "2025-08-08T10-21-03", "imageWidth": "5549", "imageHeight": "3699"},
 {"filename": "DSC00379.jpg", "aperture": "8.0", "shutterSpeed": "1/80", "iso": "250", "focalLength": "50.0 mm", "dateTaken": "2025-08-08T10-24-53", "imageWidth": "4000", "imageHeight": "6000"},
@@ -17,14 +11,7 @@
 {"filename": "DSC00423.jpg", "aperture": "5.6", "shutterSpeed": "1/200", "iso": "100", "focalLength": "50.0 mm", "dateTaken": "2025-08-08T10-46-11", "imageWidth": "4000", "imageHeight": "6000"},
 {"filename": "DSC00427.jpg", "aperture": "8.0", "shutterSpeed": "1/125", "iso": "100", "focalLength": "50.0 mm", "dateTaken": "2025-08-08T10-49-21", "imageWidth": "4000", "imageHeight": "6000"},
 {"filename": "DSC00441.jpg", "aperture": "7.1", "shutterSpeed": "1/250", "iso": "400", "focalLength": "34.0 mm", "dateTaken": "2025-08-08T10-58-43", "imageWidth": "4000", "imageHeight": "6000"},
-{"filename": "DSC00454.jpg", "aperture": "8.0", "shutterSpeed": "1/250", "iso": "100", "focalLength": "50.0 mm", "dateTaken": "2025-08-08T11-02-43", "imageWidth": "4000", "imageHeight": "6000"},
-{"filename": "DSC00491.jpg", "aperture": "5.6", "shutterSpeed": "1/2000", "iso": "400", "focalLength": "50.0 mm", "dateTaken": "2025-08-08T11-26-12", "imageWidth": "6000", "imageHeight": "4000"},
 {"filename": "DSC00524.jpg", "aperture": "5.6", "shutterSpeed": "1/400", "iso": "6400", "focalLength": "50.0 mm", "dateTaken": "2025-08-08T16-05-08", "imageWidth": "4000", "imageHeight": "6000"},
-{"filename": "DSC00585.jpg", "aperture": "8.0", "shutterSpeed": "1/60", "iso": "320", "focalLength": "35.0 mm", "dateTaken": "2025-08-13T19-05-42", "imageWidth": "4056", "imageHeight": "2704"},
 {"filename": "DSC00607.jpg", "aperture": "8.0", "shutterSpeed": "1/250", "iso": "640", "focalLength": "35.0 mm", "dateTaken": "2025-08-13T19-18-37", "imageWidth": "6000", "imageHeight": "4000"},
 {"filename": "DSC00610.jpg", "aperture": "8.0", "shutterSpeed": "1/250", "iso": "320", "focalLength": "35.0 mm", "dateTaken": "2025-08-13T19-20-02", "imageWidth": "5806", "imageHeight": "3871"},
-{"filename": "DSC00645.jpg", "aperture": "8.0", "shutterSpeed": "1/100", "iso": "125", "focalLength": "50.0 mm", "dateTaken": "2025-08-13T19-37-53", "imageWidth": "6000", "imageHeight": "4000"},
-{"filename": "DSC00888.jpg", "aperture": "null", "shutterSpeed": "1/125", "iso": "200", "focalLength": "null", "dateTaken": "2025-08-26T20-06-20", "imageWidth": "4000", "imageHeight": "6000"},
-{"filename": "DSC00889.jpg", "aperture": "null", "shutterSpeed": "1/125", "iso": "250", "focalLength": "null", "dateTaken": "2025-08-26T20-06-50", "imageWidth": "4000", "imageHeight": "6000"},
-{"filename": "DSC00910.jpg", "aperture": "null", "shutterSpeed": "1/1000", "iso": "1250", "focalLength": "null", "dateTaken": "2025-08-26T20-16-36", "imageWidth": "6000", "imageHeight": "4000"},
-{"filename": "DSC00927.jpg", "aperture": "null", "shutterSpeed": "1/640", "iso": "3200", "focalLength": "null", "dateTaken": "2025-08-26T20-24-59", "imageWidth": "4000", "imageHeight": "6000"}]
+{"filename": "DSC00645.jpg", "aperture": "8.0", "shutterSpeed": "1/100", "iso": "125", "focalLength": "50.0 mm", "dateTaken": "2025-08-13T19-37-53", "imageWidth": "6000", "imageHeight": "4000"}]
