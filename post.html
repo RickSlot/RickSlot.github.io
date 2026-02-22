@@ -79,7 +79,23 @@
       font-weight: 500;
       color: #111111;
       margin-top: 2rem;
+      padding-left: 0.75rem;
+      border-left: 3px solid #d0d0ce;
     }
+
+    .post-body h1 { font-size: 1.3rem; }
+    .post-body h2 { font-size: 1.15rem; }
+    .post-body h3 { font-size: 1.05rem; }
+
+    .back-link {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: #888888;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .back-link:hover { color: #111111; }
 
     .post-body a {
       color: #111111;
@@ -186,6 +202,7 @@
           document.title = `${title} — Rick Slot`;
 
           content.innerHTML = `
+            <a href="blog.html" class="back-link">← Back to blog</a>
             <div class="post-header">
               <h1>${title}</h1>
               ${date ? `<p class="post-date">${date}</p>` : ''}

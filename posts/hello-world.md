@@ -3,13 +3,13 @@ title: Hello World
 date: 2026-02-22
 ---
 
-Dit is de eerste persoonlijke blog post die ik schrijf. Ik heb vandaag en gister mijn website een kleine update gegeven.
+Dit is de eerste persoonlijke blogpost die ik schrijf. Ik heb vandaag en gisteren mijn website een kleine update gegeven.
 Met behulp van Claude is dit aardig gelukt. Het is interessant om te experimenteren met deze AI tool. Ik heb Claude gebruikt in combinatie met OpenSpec.
 Wat ik nog wel merk is dat het lastig is om uit te drukken in woorden wat ik precies wil. Zelfs als ik het voor mijn gevoel duidelijk heb aangegeven zie ik dat Claude het soms anders implementeert dan verwacht.
 Ook valt het me op dat ik voor een paar simpele veranderingen hier op mijn site al veel tokens heb gebruikt. Zo zit ik nu al op 15% van mijn wekelijkse limiet.
 Ik ben benieuwd hoe dit zou zijn wanneer ik dit toepas op een grotere codebase. Ik kan me voorstellen dat ik dan snel door mijn tokens heen ben.
 
-Ik weet niet helemaal waar ik naar toe wil met deze blog, maar ik merk dat ik soms de behoefte heb om gedachtes op te schrijven om ze te verwerken.
+Ik weet niet helemaal waar ik naartoe wil met deze blog, maar ik merk dat ik soms de behoefte heb om gedachten op te schrijven om ze te verwerken.
 Ook lijkt het me interessant om te zien hoe mijn gedachtegang door de tijd heen veranderd (of juist niet?).
 
 Deze week ben ik met een aantal dingen bezig geweest. In willekeurige volgorde: 
@@ -28,9 +28,9 @@ Vorige week had ik al een goede week van 50 km gedraaid en deze week zelfs 70 km
 
 # Nieuwe lens
 Vorige zomer heb ik een Sony a6400 camera gekocht. Tijdens onze reis was ik al erg aan het twijfelen om er een te kopen. Uiteindelijk ben ik toch overstag gegaan.
-Youtube weet met zijn aanbevolen videos altijd precies wat mij prikkelt. Daardoor was ik op zoek naar een manuele lens die ik op mijn camera zou kunnen gebruiken. 
+Youtube weet met zijn aanbevolen video's altijd precies wat mij prikkelt. Daardoor was ik op zoek naar een manuele lens die ik op mijn camera zou kunnen gebruiken. 
 Ik had eerder al een keer een verloopstukje gekocht zodat ik Sony A-Mount lenzen kan gebruiken op mijn camera. Deze week was ik op Marktplaats aan het struinen en zag ik een mooie Sigma 18-200mm zoom lens te koop staan. 
-Het is een oud model, maar de kwaliteit is nog steeds goed. De volgende stap is nu om de lens ook daadwerkelijk te gaan gebruiken. Soms loop ik er tegen aan dat videos kijken op Youtube kijken leuker is dan de activeit die ik bekijk zelf doen.
+Het is een oud model, maar de kwaliteit is nog steeds goed. De volgende stap is nu om de lens ook daadwerkelijk te gaan gebruiken. Soms loop ik er tegen aan dat videos kijken op Youtube kijken leuker is dan de activiteit die ik bekijk zelf doen.
 Dit is al vaker voorgevallen met bijvoorbeeld gamen, fietsen, hardlopen, boulderen, schilderen en vast nog veel meer dingen die ik vergeet op te noemen.
 
 Dit is een van de dingen die mij af en toe bezig houden. Soms lijkt het idee van iets doen leuker dan het idee zelf. 
