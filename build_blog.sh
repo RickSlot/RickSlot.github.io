@@ -31,13 +31,17 @@ for f in "$POSTS_DIR"/*.md; do
   # Excerpt: first non-empty, non-heading body line after frontmatter
   excerpt=$(awk 'BEGIN{p=0} /^---/{p++; next} p>=2 && /^#/{next} p>=2 && NF>0{print; exit}' "$f")
 
+  # Body: everything after the closing ---
+  body=$(awk 'BEGIN{p=0} /^---/{p++; next} p>=2{print}' "$f")
+
   # Append compact JSON entry to temp file
   jq -cn \
     --arg slug "$slug" \
     --arg title "$title" \
     --arg date "$date" \
     --arg excerpt "$excerpt" \
-    '{slug: $slug, title: $title, date: $date, excerpt: $excerpt}' >> "$TMPFILE"
+    --arg body "$body" \
+    '{slug: $slug, title: $title, date: $date, excerpt: $excerpt, body: $body}' >> "$TMPFILE"
 
   count=$((count + 1))
 done
