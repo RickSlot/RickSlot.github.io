@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Running Calculator — Rick Slot</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏃‍♂️</text></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #e0f7fa);
+      color: #333;
+      min-height: 100vh;
+      padding-top: 4rem;
+    }
+
+    nav {
+      width: 100%;
+      background-color: #444;
+      text-align: center;
+      padding: 1rem 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      margin: 0 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover { background-color: #555; }
+
+    .page-content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #4f46e5;
+      margin: 0;
+    }
+
+    .card {
+      background-color: #ffffffcc;
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      color: #4f46e5;
+      margin: 0 0 1.25rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Pace Converter ── */
+    .converter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .field-group label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .field-group input,
+    .field-group select,
+    #custom-dist {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      padding: 0.5rem 0.7rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      color: #333;
+      background: white;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    #custom-dist:focus { border-color: #4f46e5; }
+
+    /* ── Race Calculator ── */
+    .race-inputs {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-end;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .race-inputs .field-group { flex: 1; min-width: 140px; }
+
+    #custom-dist-wrap {
+      display: none;
+      flex-direction: column;
+      gap: 0.3rem;
+      flex: 0 0 110px;
+    }
+
+    #custom-dist-wrap.visible { display: flex; }
+
+    #custom-dist-wrap label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .pace-time-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pace-time-row .field-group { flex: 1; }
+
+    .pace-time-sep {
+      font-size: 1.2rem;
+      color: #ccc;
+      padding-bottom: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Checkpoints list ── */
+    .checkpoints {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .checkpoints:not(:empty) {
+      border-top: 2px solid #eaeaea;
+    }
+
+    .checkpoints li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.4rem;
+      border-bottom: 1px solid #f2f2f2;
+      font-size: 0.95rem;
+    }
+
+    .checkpoints li:last-child { border-bottom: none; }
+
+    .checkpoints li .cp-label { color: #666; }
+
+    .checkpoints li .cp-time { font-weight: 600; color: #333; font-variant-numeric: tabular-nums; }
+
+    .checkpoints li.finish {
+      background: #f0efff;
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
+      margin-top: 0.3rem;
+      border-bottom: none;
+    }
+
+    .checkpoints li.finish .cp-label { color: #4f46e5; font-weight: 600; }
+    .checkpoints li.finish .cp-time  { color: #4f46e5; font-size: 1.05rem; }
+
+    /* ── Quick Reference ── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+
+    .ref-table th {
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.35rem 0.5rem;
+      border-bottom: 2px solid #eaeaea;
+    }
+
+    .ref-table td {
+      padding: 0.55rem 0.5rem;
+      border-bottom: 1px solid #f2f2f2;
+    }
+
+    .ref-table tr:last-child td { border-bottom: none; }
+
+    .ref-table td:first-child { font-weight: 600; color: #444; }
+
+    .ref-table td.time-val { color: #4f46e5; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    .ref-table td.time-empty { color: #ccc; }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .converter-grid { grid-template-columns: 1fr 1fr; }
+
+      .card { padding: 1.25rem 1.25rem; }
+
+      .page-content { padding: 1.5rem 0.75rem 2.5rem; }
+
+      .pace-time-sep { display: none; }
+
+      .pace-time-row { flex-wrap: wrap; }
+
+      .pace-time-row .field-group { min-width: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="portfolio.html">Photography</a>
+  <a href="running.html">Running</a>
+</nav>
+
+<div class="page-content">
+  <h1>Running Calculator</h1>
+
+  <!-- ── Pace Converter Card ── -->
+  <div class="card">
+    <h2>Pace Converter</h2>
+    <div class="converter-grid">
+      <div class="field-group">
+        <label>min/km</label>
+        <input type="text" id="conv-minkm" placeholder="mm:ss" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label>min/mile</label>
+        <input type="text" id="conv-minmile" placeholder="mm:ss" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label>km/h</label>
+        <input type="text" id="conv-kmh" placeholder="13.3" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Race Calculator Card ── -->
+  <div class="card">
+    <h2>Race Calculator</h2>
+
+    <div class="race-inputs">
+      <div class="field-group">
+        <label>Distance</label>
+        <select id="race-dist">
+          <option value="0.4">400m</option>
+          <option value="1">1 km</option>
+          <option value="5">5 km</option>
+          <option value="10">10 km</option>
+          <option value="15">15 km</option>
+          <option value="21.097">Half Marathon</option>
+          <option value="42.195" selected>Marathon</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+      <div id="custom-dist-wrap">
+        <label>km</label>
+        <input type="number" id="custom-dist" placeholder="e.g. 30" min="0.1" step="0.1" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="pace-time-row">
+      <div class="field-group">
+        <label>Pace (min/km)</label>
+        <input type="text" id="race-pace" placeholder="mm:ss" autocomplete="off">
+      </div>
+      <div class="pace-time-sep">↔</div>
+      <div class="field-group">
+        <label>Goal Time</label>
+        <input type="text" id="race-time" placeholder="h:mm:ss" autocomplete="off">
+      </div>
+    </div>
+
+    <ul class="checkpoints" id="checkpoints"></ul>
+  </div>
+
+  <!-- ── Quick Reference Card ── -->
+  <div class="card">
+    <h2>Quick Reference</h2>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Distance</th>
+          <th>Finish Time</th>
+        </tr>
+      </thead>
+      <tbody id="ref-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // ── Constants ──────────────────────────────────────────────────────────────
+  const DISTANCES = [
+    { label: '400m',          km: 0.4 },
+    { label: '1 km',          km: 1 },
+    { label: '5 km',          km: 5 },
+    { label: '10 km',         km: 10 },
+    { label: '15 km',         km: 15 },
+    { label: 'Half Marathon', km: 21.097 },
+    { label: 'Marathon',      km: 42.195 },
+  ];
+
+  const MARATHON_KM = 42.195;
+  const HALF_KM     = 21.097;
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
+  /** Parse "mm:ss" to decimal minutes. Returns null on invalid. */
+  function parsePace(str) {
+    const m = str.trim().match(/^(\d+):([0-5]\d)$/);
+    if (!m) return null;
+    return parseInt(m[1], 10) + parseInt(m[2], 10) / 60;
+  }
+
+  /** Parse "h:mm:ss" or "mm:ss" to total seconds. Returns null on invalid. */
+  function parseTime(str) {
+    str = str.trim();
+    let m = str.match(/^(\d+):([0-5]\d):([0-5]\d)$/);
+    if (m) return parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60 + parseInt(m[3], 10);
+    m = str.match(/^(\d+):([0-5]\d)$/);
+    if (m) return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+    return null;
+  }
+
+  /** Format decimal minutes to "mm:ss". */
+  function formatPace(dec) {
+    const s = Math.round(dec * 60);
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  /** Format total seconds to "mm:ss" or "h:mm:ss". */
+  function formatTime(sec) {
+    sec = Math.round(sec);
+    if (sec < 3600) return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+    const h = Math.floor(sec / 3600);
+    const rem = sec % 3600;
+    return h + ':' + String(Math.floor(rem / 60)).padStart(2, '0') + ':' + String(rem % 60).padStart(2, '0');
+  }
+
+  function fmtKm(km) {
+    if (km < 1) return (km * 1000) + 'm';
+    return (Math.round(km * 1000) / 1000) + ' km';
+  }
+
+  // ── Pace Converter ─────────────────────────────────────────────────────────
+  const convMinkm   = document.getElementById('conv-minkm');
+  const convMinmile = document.getElementById('conv-minmile');
+  const convKmh     = document.getElementById('conv-kmh');
+
+  convMinkm.addEventListener('input', () => {
+    const p = parsePace(convMinkm.value);
+    if (p === null) { convMinmile.value = ''; convKmh.value = ''; return; }
+    convMinmile.value = formatPace(p * 1.60934);
+    convKmh.value = (60 / p).toFixed(1);
+  });
+
+  convMinmile.addEventListener('input', () => {
+    const pm = parsePace(convMinmile.value);
+    if (pm === null) { convMinkm.value = ''; convKmh.value = ''; return; }
+    const pk = pm / 1.60934;
+    convMinkm.value = formatPace(pk);
+    convKmh.value = (60 / pk).toFixed(1);
+  });
+
+  convKmh.addEventListener('input', () => {
+    const spd = parseFloat(convKmh.value);
+    if (isNaN(spd) || spd <= 0) { convMinkm.value = ''; convMinmile.value = ''; return; }
+    const pk = 60 / spd;
+    convMinkm.value = formatPace(pk);
+    convMinmile.value = formatPace(pk * 1.60934);
+  });
+
+  // ── Race Calculator ─────────────────────────────────────────────────────────
+  const raceDistSel    = document.getElementById('race-dist');
+  const customDistWrap = document.getElementById('custom-dist-wrap');
+  const customDistInp  = document.getElementById('custom-dist');
+  const racePaceInp    = document.getElementById('race-pace');
+  const raceTimeInp    = document.getElementById('race-time');
+  const checkpointsList = document.getElementById('checkpoints');
+
+  function getDistKm() {
+    if (raceDistSel.value === 'custom') {
+      const v = parseFloat(customDistInp.value);
+      return (isNaN(v) || v <= 0) ? null : v;
+    }
+    return parseFloat(raceDistSel.value);
+  }
+
+  function getChunkKm(distKm) {
+    if (distKm <= 1)  return null;
+    if (distKm <= 10) return 1;
+    return 5;
+  }
+
+  function buildCumulativeSplits(distKm, paceDecimal) {
+    const chunkKm = getChunkKm(distKm);
+    const points = [];
+
+    if (chunkKm) {
+      let covered = 0;
+      while (covered + chunkKm < distKm - 0.001) {
+        covered += chunkKm;
+        points.push({ km: covered });
+      }
+      // Insert half-marathon midpoint for marathon
+      if (Math.abs(distKm - MARATHON_KM) < 0.01) {
+        const hasHalf = points.some(p => Math.abs(p.km - HALF_KM) < 0.01);
+        if (!hasHalf) {
+          points.push({ km: HALF_KM });
+          points.sort((a, b) => a.km - b.km);
+        }
+      }
+    }
+
+    points.push({ km: distKm, isFinish: true });
+
+    return points.map(p => ({
+      label:    fmtKm(p.km),
+      time:     formatTime(p.km * paceDecimal * 60),
+      isFinish: !!p.isFinish,
+    }));
+  }
+
+  function renderSplits(pace) {
+    checkpointsList.innerHTML = '';
+    if (pace === null) return;
+    const distKm = getDistKm();
+    if (!distKm) return;
+
+    for (const s of buildCumulativeSplits(distKm, pace)) {
+      const li = document.createElement('li');
+      if (s.isFinish) li.className = 'finish';
+      li.innerHTML = `<span class="cp-label">${s.label}</span><span class="cp-time">${s.time}</span>`;
+      checkpointsList.appendChild(li);
+    }
+  }
+
+  // ── Quick Reference ────────────────────────────────────────────────────────
+  const refTbody = document.getElementById('ref-tbody');
+
+  function renderQuickRef(pace) {
+    refTbody.innerHTML = '';
+    for (const dist of DISTANCES) {
+      const tr = document.createElement('tr');
+      const tdDist = document.createElement('td');
+      tdDist.textContent = dist.label;
+      const tdTime = document.createElement('td');
+      if (pace !== null) {
+        tdTime.textContent = formatTime(dist.km * pace * 60);
+        tdTime.className = 'time-val';
+      } else {
+        tdTime.textContent = '—';
+        tdTime.className = 'time-empty';
+      }
+      tr.append(tdDist, tdTime);
+      refTbody.appendChild(tr);
+    }
+  }
+
+  // ── Two-way binding ────────────────────────────────────────────────────────
+  function syncFromPace(pace) {
+    const distKm = getDistKm();
+    if (pace !== null && distKm) {
+      if (document.activeElement !== raceTimeInp) {
+        raceTimeInp.value = formatTime(distKm * pace * 60);
+      }
+    } else if (document.activeElement !== raceTimeInp) {
+      raceTimeInp.value = '';
+    }
+    renderSplits(pace);
+    renderQuickRef(pace);
+  }
+
+  function syncFromTime(totalSec) {
+    const distKm = getDistKm();
+    let pace = null;
+    if (totalSec && distKm) {
+      pace = totalSec / 60 / distKm;
+      if (document.activeElement !== racePaceInp) {
+        racePaceInp.value = formatPace(pace);
+      }
+    } else if (document.activeElement !== racePaceInp) {
+      racePaceInp.value = '';
+    }
+    renderSplits(pace);
+    renderQuickRef(pace);
+  }
+
+  racePaceInp.addEventListener('input', () => syncFromPace(parsePace(racePaceInp.value)));
+
+  raceTimeInp.addEventListener('input', () => syncFromTime(parseTime(raceTimeInp.value)));
+
+  raceDistSel.addEventListener('change', () => {
+    customDistWrap.classList.toggle('visible', raceDistSel.value === 'custom');
+    // Derive goal time from current pace, or re-derive pace from goal time
+    const pace = parsePace(racePaceInp.value);
+    if (pace !== null) {
+      syncFromPace(pace);
+    } else {
+      syncFromTime(parseTime(raceTimeInp.value));
+    }
+  });
+
+  customDistInp.addEventListener('input', () => {
+    const pace = parsePace(racePaceInp.value);
+    if (pace !== null) {
+      syncFromPace(pace);
+    } else {
+      syncFromTime(parseTime(raceTimeInp.value));
+    }
+  });
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  renderQuickRef(null);
+</script>
+</body>
+</html>
