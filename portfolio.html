@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rick's Photography Portfolio</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -13,16 +13,17 @@
 
         body {
             margin: 0;
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #f0f4ff, #e0f7fa);
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background: #f8f8f7;
+            color: #111111;
         }
 
         nav {
             width: 100%;
-            background-color: #444;
+            background: white;
+            border-bottom: 1px solid #e8e8e6;
             text-align: center;
-            padding: 1rem 0;
+            padding: 0.75rem 0;
             position: fixed;
             top: 0;
             left: 0;
@@ -30,16 +31,15 @@
         }
 
         nav a {
-            color: white;
+            color: #111111;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            margin: 0 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+            padding: 0.25rem 0;
+            margin: 0 1.25rem;
+            font-size: 0.9rem;
         }
 
         nav a:hover {
-            background-color: #555;
+            text-decoration: underline;
         }
 
         .gallery {
@@ -47,32 +47,25 @@
             column-gap: 1rem;
             padding: 1.5rem;
             max-width: 1200px;
-            margin: 4rem auto 0;
+            margin: 3.5rem auto 0;
         }
 
         .gallery-item {
             break-inside: avoid;
             margin-bottom: 1rem;
-            border-radius: 10px;
+            border-radius: 4px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: opacity 0.2s ease;
         }
 
         .gallery-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0.88;
         }
 
         .gallery-item img {
             width: 100%;
             display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.03);
         }
 
         /* Lightbox */
