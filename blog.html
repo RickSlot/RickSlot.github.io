@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog — Rick Slot</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✍️</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f8f8f7;
+      color: #111111;
+      min-height: 100vh;
+      padding-top: 4rem;
+    }
+
+    nav {
+      width: 100%;
+      background: white;
+      border-bottom: 1px solid #e8e8e6;
+      text-align: center;
+      padding: 0.75rem 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: #111111;
+      text-decoration: none;
+      padding: 0.25rem 0;
+      margin: 0 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover { text-decoration: underline; }
+
+    .page-content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: #111111;
+      margin: 0 0 2rem;
+    }
+
+    .post-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .post-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid #e8e8e6;
+    }
+
+    .post-item:first-child {
+      border-top: 1px solid #e8e8e6;
+    }
+
+    .post-title {
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin: 0 0 0.3rem;
+    }
+
+    .post-title a {
+      color: #111111;
+      text-decoration: none;
+    }
+
+    .post-title a:hover {
+      text-decoration: underline;
+    }
+
+    .post-date {
+      font-size: 0.8rem;
+      color: #888888;
+      margin: 0 0 0.6rem;
+    }
+
+    .post-excerpt {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .empty-state {
+      color: #888888;
+      font-size: 0.95rem;
+      padding: 2rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .page-content { padding: 1.5rem 0.75rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">Photography</a>
+    <a href="running.html">Running</a>
+    <a href="blog.html">Blog</a>
+  </nav>
+
+  <div class="page-content">
+    <h1>Blog</h1>
+    <ul class="post-list" id="post-list"></ul>
+  </div>
+
+  <script>
+    const list = document.getElementById('post-list');
+
+    fetch('posts.json')
+      .then(r => r.json())
+      .then(posts => {
+        if (!posts.length) {
+          list.insertAdjacentHTML('afterend', '<p class="empty-state">No posts yet.</p>');
+          return;
+        }
+        posts.forEach(post => {
+          const date = new Date(post.date + 'T00:00:00').toLocaleDateString('en-GB', {
+            day: 'numeric', month: 'long', year: 'numeric'
+          });
+          const li = document.createElement('li');
+          li.className = 'post-item';
+          li.innerHTML = `
+            <h2 class="post-title"><a href="post.html?slug=${encodeURIComponent(post.slug)}">${post.title}</a></h2>
+            <p class="post-date">${date}</p>
+            <p class="post-excerpt">${post.excerpt}</p>
+          `;
+          list.appendChild(li);
+        });
+      })
+      .catch(() => {
+        list.insertAdjacentHTML('afterend', '<p class="empty-state">Could not load posts.</p>');
+      });
+  </script>
+</body>
+</html>

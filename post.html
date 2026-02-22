@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post — Rick Slot</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✍️</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f8f8f7;
+      color: #111111;
+      min-height: 100vh;
+      padding-top: 4rem;
+    }
+
+    nav {
+      width: 100%;
+      background: white;
+      border-bottom: 1px solid #e8e8e6;
+      text-align: center;
+      padding: 0.75rem 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: #111111;
+      text-decoration: none;
+      padding: 0.25rem 0;
+      margin: 0 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover { text-decoration: underline; }
+
+    .page-content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .post-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e8e8e6;
+    }
+
+    .post-header h1 {
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: #111111;
+      margin: 0 0 0.4rem;
+      line-height: 1.3;
+    }
+
+    .post-date {
+      font-size: 0.8rem;
+      color: #888888;
+      margin: 0;
+    }
+
+    .post-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #222;
+    }
+
+    .post-body h1,
+    .post-body h2,
+    .post-body h3 {
+      font-weight: 500;
+      color: #111111;
+      margin-top: 2rem;
+    }
+
+    .post-body a {
+      color: #111111;
+      text-decoration: underline;
+    }
+
+    .post-body a:hover {
+      opacity: 0.6;
+    }
+
+    .post-body code {
+      font-family: ui-monospace, 'SF Mono', monospace;
+      font-size: 0.9em;
+      background: #efefed;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+
+    .post-body pre {
+      background: #efefed;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+
+    .post-body pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid #e8e8e6;
+      margin: 0;
+      padding-left: 1.25rem;
+      color: #666;
+    }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+
+    .error-state {
+      color: #888888;
+      font-size: 0.95rem;
+      padding: 2rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .page-content { padding: 1.5rem 0.75rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">Photography</a>
+    <a href="running.html">Running</a>
+    <a href="blog.html">Blog</a>
+  </nav>
+
+  <div class="page-content" id="page-content">
+    <p class="error-state">Loading…</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    const content = document.getElementById('page-content');
+
+    function showError(msg) {
+      content.innerHTML = `<p class="error-state">${msg}</p>`;
+    }
+
+    function parseFrontmatter(text) {
+      const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+      if (!match) return { meta: {}, body: text };
+      const meta = {};
+      match[1].split('\n').forEach(line => {
+        const [key, ...rest] = line.split(':');
+        if (key && rest.length) meta[key.trim()] = rest.join(':').trim();
+      });
+      return { meta, body: match[2] };
+    }
+
+    if (!slug) {
+      showError('No post specified.');
+    } else {
+      fetch(`posts/${slug}.md`)
+        .then(r => {
+          if (!r.ok) throw new Error('not found');
+          return r.text();
+        })
+        .then(text => {
+          const { meta, body } = parseFrontmatter(text);
+          const title = meta.title || slug;
+          const date = meta.date
+            ? new Date(meta.date + 'T00:00:00').toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'long', year: 'numeric'
+              })
+            : '';
+
+          document.title = `${title} — Rick Slot`;
+
+          content.innerHTML = `
+            <div class="post-header">
+              <h1>${title}</h1>
+              ${date ? `<p class="post-date">${date}</p>` : ''}
+            </div>
+            <div class="post-body" id="post-body"></div>
+          `;
+
+          document.getElementById('post-body').innerHTML = marked.parse(body);
+        })
+        .catch(() => showError('Post not found.'));
+    }
+  </script>
+</body>
+</html>
