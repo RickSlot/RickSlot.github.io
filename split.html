@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Split — Rick Slot</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧾</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f8f8f7;
+      color: #111111;
+      min-height: 100vh;
+      padding-top: 56px;
+    }
+
+    nav {
+      width: 100%;
+      background: white;
+      border-bottom: 1px solid #e8e8e6;
+      text-align: center;
+      padding: 0.75rem 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: #111111;
+      text-decoration: none;
+      padding: 0.25rem 0;
+      margin: 0 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin: 0 0 0.4rem;
+    }
+
+    .subtitle {
+      color: #555;
+      font-size: 0.95rem;
+      margin: 0 0 2rem;
+      line-height: 1.6;
+    }
+
+    .person-card {
+      background: white;
+      border: 1px solid #e8e8e6;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .person-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.875rem;
+    }
+
+    .person-name {
+      flex: 1;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1px solid #e8e8e6;
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      color: #111;
+      background: #fafaf9;
+      outline: none;
+    }
+
+    .person-name:focus {
+      border-color: #999;
+      background: white;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.3rem;
+      color: #bbb;
+      font-size: 1rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .btn-icon:hover { color: #555; }
+
+    .expenses-list { margin-bottom: 0.625rem; }
+
+    .expense-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .expense-row input {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      border: 1px solid #e8e8e6;
+      border-radius: 6px;
+      padding: 0.4rem 0.625rem;
+      color: #111;
+      background: #fafaf9;
+      outline: none;
+    }
+
+    .expense-row input:focus {
+      border-color: #999;
+      background: white;
+    }
+
+    .expense-desc { flex: 1; min-width: 0; }
+    .expense-amount { width: 90px; flex-shrink: 0; }
+
+    .btn-add-expense {
+      background: none;
+      border: 1px dashed #d8d8d6;
+      border-radius: 6px;
+      color: #888;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.825rem;
+      padding: 0.375rem 0.625rem;
+      cursor: pointer;
+    }
+
+    .btn-add-expense:hover {
+      border-color: #aaa;
+      color: #444;
+    }
+
+    .btn-add-person {
+      background: none;
+      border: 1px dashed #d8d8d6;
+      border-radius: 8px;
+      color: #777;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      padding: 0.75rem;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-add-person:hover {
+      border-color: #aaa;
+      color: #333;
+    }
+
+    .btn-calculate {
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.75rem 2rem;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-calculate:hover { background: #333; }
+
+    .error-msg {
+      color: #c0392b;
+      font-size: 0.875rem;
+      margin: -1rem 0 1rem;
+      display: none;
+    }
+
+    .results {
+      display: none;
+      background: white;
+      border: 1px solid #e8e8e6;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .results-section {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .results-section + .results-section {
+      border-top: 1px solid #e8e8e6;
+    }
+
+    .results-section h2 {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #999;
+      margin: 0 0 0.875rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #555;
+      padding: 0.2rem 0;
+    }
+
+    .summary-row .value {
+      font-weight: 500;
+      color: #111;
+    }
+
+    .summary-totals {
+      border-top: 1px solid #f0f0ee;
+      margin-top: 0.625rem;
+      padding-top: 0.625rem;
+    }
+
+    .transaction {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 0;
+      font-size: 0.9rem;
+    }
+
+    .transaction + .transaction {
+      border-top: 1px solid #f8f8f6;
+    }
+
+    .transaction .name { font-weight: 500; }
+    .transaction .arrow { color: #bbb; font-size: 0.8rem; }
+    .transaction .amount { margin-left: auto; font-weight: 500; }
+
+    .all-even {
+      color: #555;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="portfolio.html">Photography</a>
+  <a href="running.html">Running</a>
+  <a href="blog.html">Blog</a>
+  <a href="split.html">Split</a>
+</nav>
+
+<div class="container">
+  <h1>Expense Splitter</h1>
+  <p class="subtitle">Add everyone's expenses and see who owes who.</p>
+
+  <div id="persons-list"></div>
+
+  <button class="btn-add-person" onclick="addPerson()">+ Add person</button>
+
+  <p class="error-msg" id="error-msg"></p>
+
+  <button class="btn-calculate" onclick="calculate()">Calculate</button>
+
+  <div class="results" id="results">
+    <div class="results-section">
+      <h2>Summary</h2>
+      <div id="summary"></div>
+    </div>
+    <div class="results-section">
+      <h2>Settlements</h2>
+      <div id="settlements"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let nextPersonId = 0;
+  let nextExpenseId = 0;
+
+  function addPerson() {
+    const id = nextPersonId++;
+    const list = document.getElementById('persons-list');
+    const card = document.createElement('div');
+    card.className = 'person-card';
+    card.id = `person-${id}`;
+    card.innerHTML = `
+      <div class="person-header">
+        <input type="text" placeholder="Name" class="person-name" />
+        <button class="btn-icon" onclick="removePerson(${id})" title="Remove">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="expenses-list" id="expenses-${id}"></div>
+      <button class="btn-add-expense" onclick="addExpense(${id})">+ Add expense</button>
+    `;
+    list.appendChild(card);
+    addExpense(id);
+    card.querySelector('.person-name').focus();
+  }
+
+  function removePerson(id) {
+    document.getElementById(`person-${id}`).remove();
+  }
+
+  function addExpense(personId) {
+    const list = document.getElementById(`expenses-${personId}`);
+    const eid = nextExpenseId++;
+    const row = document.createElement('div');
+    row.className = 'expense-row';
+    row.id = `expense-${eid}`;
+    row.innerHTML = `
+      <input type="text" placeholder="Description" class="expense-desc" />
+      <input type="number" placeholder="0.00" min="0" step="0.01" class="expense-amount" />
+      <button class="btn-icon" onclick="removeExpense(${eid})" title="Remove">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    `;
+    list.appendChild(row);
+    row.querySelector('.expense-desc').focus();
+  }
+
+  function removeExpense(id) {
+    document.getElementById(`expense-${id}`).remove();
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('error-msg');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function clearError() {
+    const el = document.getElementById('error-msg');
+    el.textContent = '';
+    el.style.display = 'none';
+  }
+
+  function calculate() {
+    clearError();
+    document.getElementById('results').style.display = 'none';
+
+    const cards = document.querySelectorAll('.person-card');
+    if (cards.length < 2) {
+      showError('Add at least two people to split expenses.');
+      return;
+    }
+
+    const people = [];
+    for (const card of cards) {
+      const name = card.querySelector('.person-name').value.trim();
+      if (!name) {
+        showError('Please give everyone a name.');
+        return;
+      }
+      let total = 0;
+      for (const row of card.querySelectorAll('.expense-row')) {
+        const val = parseFloat(row.querySelector('.expense-amount').value);
+        if (!isNaN(val) && val > 0) total += val;
+      }
+      people.push({ name, total });
+    }
+
+    const grandTotal = people.reduce((s, p) => s + p.total, 0);
+    if (grandTotal === 0) {
+      showError('No expenses added yet.');
+      return;
+    }
+
+    const fairShare = grandTotal / people.length;
+    // positive balance = owed money, negative = owes money
+    const balances = people.map(p => ({
+      name: p.name,
+      paid: p.total,
+      balance: p.total - fairShare
+    }));
+
+    // Summary
+    const summaryEl = document.getElementById('summary');
+    summaryEl.innerHTML = '';
+    for (const p of balances) {
+      const row = document.createElement('div');
+      row.className = 'summary-row';
+      row.innerHTML = `<span>${p.name}</span><span class="value">€${p.paid.toFixed(2)}</span>`;
+      summaryEl.appendChild(row);
+    }
+    const totals = document.createElement('div');
+    totals.className = 'summary-totals';
+    totals.innerHTML = `
+      <div class="summary-row"><span>Total</span><span class="value">€${grandTotal.toFixed(2)}</span></div>
+      <div class="summary-row"><span>Per person</span><span class="value">€${fairShare.toFixed(2)}</span></div>
+    `;
+    summaryEl.appendChild(totals);
+
+    // Minimal transactions (greedy)
+    const creditors = balances
+      .filter(p => p.balance > 0.005)
+      .map(p => ({ name: p.name, amount: p.balance }));
+    const debtors = balances
+      .filter(p => p.balance < -0.005)
+      .map(p => ({ name: p.name, amount: -p.balance }));
+
+    const transactions = [];
+    let ci = 0, di = 0;
+    while (ci < creditors.length && di < debtors.length) {
+      const c = creditors[ci];
+      const d = debtors[di];
+      const amount = Math.min(c.amount, d.amount);
+      transactions.push({ from: d.name, to: c.name, amount });
+      c.amount -= amount;
+      d.amount -= amount;
+      if (c.amount < 0.005) ci++;
+      if (d.amount < 0.005) di++;
+    }
+
+    const settlementsEl = document.getElementById('settlements');
+    settlementsEl.innerHTML = '';
+    if (transactions.length === 0) {
+      settlementsEl.innerHTML = '<p class="all-even">Everyone is already even!</p>';
+    } else {
+      for (const t of transactions) {
+        const row = document.createElement('div');
+        row.className = 'transaction';
+        row.innerHTML = `
+          <span class="name">${t.from}</span>
+          <span class="arrow">→</span>
+          <span class="name">${t.to}</span>
+          <span class="amount">€${t.amount.toFixed(2)}</span>
+        `;
+        settlementsEl.appendChild(row);
+      }
+    }
+
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Start with 3 people pre-added
+  addPerson();
+  addPerson();
+  addPerson();
+</script>
+</body>
+</html>
